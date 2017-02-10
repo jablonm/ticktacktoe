@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Hashtable;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,6 +23,7 @@ public class Plansza {
 	private Oznaczenie j; 
 	private boolean empate;
 	private static int reg[]={0,0,0};
+	public Hashtable<Integer, Character> wypelnionaPlansza = new Hashtable<Integer, Character>();
 
 	public Plansza(){
 		start();
@@ -47,6 +49,7 @@ public class Plansza {
 			buttons[i].setFont(new Font("Lucida Sans Unicode",Font.BOLD,80));
 			buttons[i].addActionListener(new EventoListener());
 			plansza.add(buttons[i]);
+			wypelnionaPlansza.put(i, ' ');
 		}
 		
 		base.getContentPane().add(plansza);
@@ -72,49 +75,63 @@ public class Plansza {
 		
 		char[][] board = new char[3][3];
 		//inicjalizacja
-//		for (int x=0; x<=2; x++) {
-//			for (int y=0; y<=2; y++) {
-//				board[x][y] = null;
-//			}
-//		}
+		for (int x=0; x<=2; x++) {
+			for (int y=0; y<=2; y++) {
+				if (board[x][y] != 'X' || board[x][y] != 'Y') {
+					board[x][y] = ' ';
+				}
+			}
+		}
 
 		int pos=-1;
 		for(int i=0;i<9 && pos==-1;i++){
 			if(buttons[i]==source)
 				pos=i;
+				wypelnionaPlansza.put(pos, j.getOznaczenie());
 		}
-		
-		switch (pos) {
-		case 0 : board[0][0] = j.getOznaczenie(); break;
-		case 1 : board[0][1] = j.getOznaczenie(); break;
-		case 2 : board[0][2] = j.getOznaczenie(); break;
-		case 3 : board[1][0] = j.getOznaczenie(); break;
-		case 4 : board[1][1] = j.getOznaczenie(); break;
-		case 5 : board[1][2] = j.getOznaczenie(); break;
-		case 6 : board[2][0] = j.getOznaczenie(); break;
-		case 7 : board[2][1] = j.getOznaczenie(); break;
-		case 8 : board[2][2] = j.getOznaczenie(); break;
-		}
-		
+	
 		source.setText(j.getOznaczenie()+"");
-		
-//		for (int x=0; x<=2; x++) {
-//			for (int y=0; y<=2; y++) {
-//				if (board[x][y] != ) {
-//					if (board[x][y] == board[x][y+1]) {
-//						if (board[x][y+1] == board[x][y+2]) {
-//							System.out.println("tak1");
-//							board[x][y] = null;
-//							break;
-//						} else {
-//							break;
-//						}
-//					} else {
-//						break;
-//					}
-//				}
-//			}
-//		}
+	
+		if (wypelnionaPlansza.get(0) != ' ') {
+			if (wypelnionaPlansza.get(0) == wypelnionaPlansza.get(1) 
+					&& wypelnionaPlansza.get(0) == wypelnionaPlansza.get(2)) {
+				System.out.println("Wygrywa: 1, 2, 3");
+			} else if (wypelnionaPlansza.get(0) == wypelnionaPlansza.get(3) 
+					&& wypelnionaPlansza.get(0) == wypelnionaPlansza.get(6)) {
+				System.out.println("Wygrywa: 1, 4, 7");
+			} else if (wypelnionaPlansza.get(0) == wypelnionaPlansza.get(4) 
+					&& wypelnionaPlansza.get(0) == wypelnionaPlansza.get(8)) {
+				System.out.println("Wygrywa: 1, 5, 9");
+			}
+		}
+		if (wypelnionaPlansza.get(1) != ' ') {
+			if (wypelnionaPlansza.get(1) == wypelnionaPlansza.get(4) 
+					&& wypelnionaPlansza.get(1) == wypelnionaPlansza.get(7)) {
+				System.out.println("Wygrywa: 2, 5, 8");
+			}
+		}
+		if (wypelnionaPlansza.get(2) != ' ') {
+			if (wypelnionaPlansza.get(2) == wypelnionaPlansza.get(4) 
+					&& wypelnionaPlansza.get(2) == wypelnionaPlansza.get(6)) {
+				System.out.println("Wygrywa: 2, 5, 8");
+			}
+			if (wypelnionaPlansza.get(2) == wypelnionaPlansza.get(5) 
+					&& wypelnionaPlansza.get(2) == wypelnionaPlansza.get(8)) {
+				System.out.println("Wygrywa: 2, 5, 8");
+			}
+		}
+		if (wypelnionaPlansza.get(3) != ' ') {
+			if (wypelnionaPlansza.get(3) == wypelnionaPlansza.get(4) 
+					&& wypelnionaPlansza.get(3) == wypelnionaPlansza.get(5)) {
+				System.out.println("Wygrywa: 4, 5, 6");
+			}
+		}
+		if (wypelnionaPlansza.get(6) != ' ') {
+			if (wypelnionaPlansza.get(6) == wypelnionaPlansza.get(7) 
+					&& wypelnionaPlansza.get(6) == wypelnionaPlansza.get(8)) {
+				System.out.println("Wygrywa: 7, 8, 9");
+			}
+		}
 		
 		j.nextPlayer();
 	}
